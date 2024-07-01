@@ -113,19 +113,24 @@ function addProject() {
     let project = document.getElementById('project_name').value;
     let priority = document.getElementById('project_priority').value;
 
-    gapi.client.sheets.spreadsheets.values.append({
-        spreadsheetId: '1qICVu7Gxs9FnRPIRnlNct3sty9cCstVyu3lU3jy0SFM',
-        range: 'Sheet1!A:B',
-        valueInputOption: 'RAW',
-        resource: {
-            values: [[project, priority]]
-        }
-    }).then((response) => {
-        console.log('Project added:', response);
-        listProjects(); // Refresh the list after adding a project
-    }).catch((error) => {
-        console.error('Error adding project:', error);
-    });
+    // Ensure the user is signed in
+    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        gapi.client.sheets.spreadsheets.values.append({
+            spreadsheetId: '1qICVu7Gxs9FnRPIRnlNct3sty9cCstVyu3lU3jy0SFM',
+            range: 'Sheet1!A:B',
+            valueInputOption: 'RAW',
+            resource: {
+                values: [[project, priority]]
+            }
+        }).then((response) => {
+            console.log('Project added:', response);
+            listProjects(); // Refresh the list after adding a project
+        }).catch((error) => {
+            console.error('Error adding project:', error);
+        });
+    } else {
+        console.error('User is not signed in');
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
