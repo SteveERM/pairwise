@@ -18,7 +18,6 @@ function initClient() {
         discoveryDocs: DISCOVERY_DOCS
     }).then(() => {
         console.log('Client initialized.');
-        document.getElementById("g_id_onload").dataset.callback = "handleCredentialResponse";
     }).catch((error) => {
         console.error('Error initializing client:', error);
     });
@@ -42,7 +41,7 @@ function handleCredentialResponse(response) {
     listProjects();
 }
 
-function parseJwt (token) {
+function parseJwt(token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
@@ -52,7 +51,7 @@ function parseJwt (token) {
     return JSON.parse(jsonPayload);
 }
 
-function handleSignoutClick(event) {
+function handleSignoutClick() {
     console.log('Signing out...');
     // Hide the content and signout button
     signoutButton.style.display = 'none';
