@@ -81,17 +81,19 @@ function listProjects() {
         range: 'Sheet1!A2:B',
     }).then((response) => {
         console.log('Projects listed:', response);
-        let range = response.result;
-        if (range.values.length > 0) {
+        let range = response.result.values;
+        if (range && range.length > 0) {
             let table = document.getElementById('projects_table');
             table.innerHTML = '<tr><th>Project</th><th>Priority</th></tr>'; // Reset table contents
-            for (let i = 0; i < range.values.length; i++) {
+            for (let i = 0; i < range.length; i++) {
                 let row = table.insertRow(-1);
                 let cell1 = row.insertCell(0);
                 let cell2 = row.insertCell(1);
-                cell1.innerHTML = range.values[i][0];
-                cell2.innerHTML = range.values[i][1];
+                cell1.innerHTML = range[i][0];
+                cell2.innerHTML = range[i][1];
             }
+        } else {
+            console.log('No data found.');
         }
     }).catch((error) => {
         console.error('Error listing projects:', error);
