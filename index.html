@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Prioritization App</title>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="app.js"></script>
+</head>
+<body>
+    <h1>Project Prioritization App</h1>
+    <button id="authorize_button">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
+    <div id="content" style="display: none;">
+        <h2>Projects</h2>
+        <table id="projects_table">
+            <tr>
+                <th>Project</th>
+                <th>Priority</th>
+            </tr>
+        </table>
+        <h2>Add Project</h2>
+        <input type="text" id="project_name" placeholder="Project Name">
+        <input type="text" id="project_priority" placeholder="Priority">
+        <button onclick="addProject()">Add Project</button>
+    </div>
+</body>
+</html>
