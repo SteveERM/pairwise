@@ -66,7 +66,7 @@ function handleSignoutClick() {
 }
 
 async function listProjects() {
-    console.log('Listing projects...');
+    console.log('BL Bla BLA Listing projects...');
     try {
         const response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1qICVu7Gxs9FnRPIRnlNct3sty9cCstVyu3lU3jy0SFM',
