@@ -12,7 +12,7 @@ function handleClientLoad() {
 }
 
 function initClient() {
-    console.log('Initializing client...');
+    console.log('22Initializing client...');
     gapi.client.init({
         clientId: CLIENT_ID,
         discoveryDocs: DISCOVERY_DOCS,
@@ -27,14 +27,12 @@ function initClient() {
 }
 
 function updateSigninStatus(isSignedIn) {
-    if (isSignedIn) {
-        // Ensure elements are correctly referenced
-        authorizeButton = document.getElementById('authorize_button');
-        signoutButton = document.getElementById('signout_button');
-        content = document.getElementById('content');
+    authorizeButton = document.getElementById('authorize_button');
+    signoutButton = document.getElementById('signout_button');
+    content = document.getElementById('content');
 
+    if (isSignedIn) {
         if (authorizeButton && signoutButton && content) {
-            // Show the content and signout button
             authorizeButton.style.display = 'none';
             signoutButton.style.display = 'block';
             content.style.display = 'block';
@@ -43,7 +41,6 @@ function updateSigninStatus(isSignedIn) {
             console.error('Error: authorizeButton, signoutButton or content element not found');
         }
     } else {
-        // Hide the content and signout button
         if (authorizeButton && signoutButton && content) {
             authorizeButton.style.display = 'block';
             signoutButton.style.display = 'none';
