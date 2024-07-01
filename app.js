@@ -38,6 +38,9 @@ function handleCredentialResponse(response) {
     signoutButton = document.getElementById('signout_button');
     content = document.getElementById('content');
 
+    console.log('signoutButton:', signoutButton);
+    console.log('content:', content);
+
     if (signoutButton && content) {
         // Show the content and signout button
         signoutButton.style.display = 'block';
@@ -121,4 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ensure elements are loaded
     signoutButton = document.getElementById('signout_button');
     content = document.getElementById('content');
+    console.log('DOM fully loaded and parsed');
+    console.log('signoutButton:', signoutButton);
+    console.log('content:', content);
 });
