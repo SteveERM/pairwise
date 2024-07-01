@@ -1,8 +1,8 @@
 let CLIENT_ID = '137672712461-j295hi3qjd3ujn9752u6muaa7c912fsk.apps.googleusercontent.com';
-let API_KEY = 'AIzaSyCTPWWPhH4ha-r4-F8XZ1QvXuGJVHy3g24'; // Replace with your actual API key
 let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 let SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
+let authorizeButton;
 let signoutButton;
 let content;
 
@@ -14,7 +14,6 @@ function handleClientLoad() {
 function initClient() {
     console.log('Initializing client...');
     gapi.client.init({
-        apiKey: API_KEY,
         clientId: CLIENT_ID,
         discoveryDocs: DISCOVERY_DOCS,
         scope: SCOPES
@@ -30,20 +29,23 @@ function initClient() {
 function updateSigninStatus(isSignedIn) {
     if (isSignedIn) {
         // Ensure elements are correctly referenced
+        authorizeButton = document.getElementById('authorize_button');
         signoutButton = document.getElementById('signout_button');
         content = document.getElementById('content');
 
-        if (signoutButton && content) {
+        if (authorizeButton && signoutButton && content) {
             // Show the content and signout button
+            authorizeButton.style.display = 'none';
             signoutButton.style.display = 'block';
             content.style.display = 'block';
             listProjects();
         } else {
-            console.error('Error: signoutButton or content element not found');
+            console.error('Error: authorizeButton, signoutButton or content element not found');
         }
     } else {
         // Hide the content and signout button
-        if (signoutButton && content) {
+        if (authorizeButton && signoutButton && content) {
+            authorizeButton.style.display = 'block';
             signoutButton.style.display = 'none';
             content.style.display = 'none';
         }
@@ -137,13 +139,15 @@ document.addEventListener('DOMContentLoaded', () => {
     handleClientLoad();
 
     // Ensure elements are loaded
+    authorizeButton = document.getElementById('authorize_button');
     signoutButton = document.getElementById('signout_button');
     content = document.getElementById('content');
     console.log('DOM fully loaded and parsed');
+    console.log('authorizeButton:', authorizeButton);
     console.log('signoutButton:', signoutButton);
     console.log('content:', content);
 
     // Add event listeners for buttons
-    document.getElementById('authorize_button').onclick = handleAuthClick;
-    document.getElementById('signout_button').onclick = handleSignoutClick;
+    authorizeButton.onclick = handleAuthClick;
+    signoutButton.onclick = handleSignoutClick;
 });
