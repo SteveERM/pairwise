@@ -11,7 +11,6 @@ let gapiInited = false;
 let gisInited = false;
 
 function gapiLoaded() {
-    console.log('Start')
     gapi.load('client', initializeGapiClient);
 }
 
