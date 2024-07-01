@@ -1,6 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Project Prioritization App</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+    <script src="app.js" async defer></script>
+</head>
+<body>
+    <h1>Project Prioritization ggg App</h1>
+    <div id="g_id_onload"
+         data-client_id="137672712461-j295hi3qjd3ujn9752u6muaa7c912fsk.apps.googleusercontent.com"
+         data-context="signin"
+         data-ux_mode="popup"
+         data-callback="handleCredentialResponse"
+         data-auto_prompt="false">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+    <button id="authorize_button" style="display: none;">Authorize</button>
+    <button id="signout_button" style="display: none;" onclick="handleSignoutClick()">Sign Out</button>
+    <div id="content" style="display: none;">
+        <h2>Projects</h2>
+        <table id="projects_table">
+            <tr>
+                <th>Project</th>
+                <th>Priority</th>
+            </tr>
+        </table>
+        <h2>Add Project</h2>
+        <input type="text" id="project_name" placeholder="Project Name">
+        <input type="text" id="project_priority" placeholder="Priority">
+        <button onclick="addProject()">Add Project</button>
+    </div>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+<head>
     <title>Project Prioritization Appa</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://apis.google.com/js/api.js" async defer></script>
