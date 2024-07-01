@@ -3,58 +3,63 @@ let API_KEY = 'AIzaSyCTPWWPhH4ha-r4-F8XZ1QvXuGJVHy3g24'; // Replace with your ac
 let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 let SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
-let authorizeButton = document.getElementById('authorize_button');
 let signoutButton = document.getElementById('signout_button');
 let content = document.getElementById('content');
 
 function handleClientLoad() {
     console.log('Loading Google API client...');
-    gapi.load('client:auth2', initClient);
+    gapi.load('client', initClient);
 }
 
 function initClient() {
     console.log('Initializing client...');
     gapi.client.init({
         apiKey: API_KEY,
-        clientId: CLIENT_ID,
-        discoveryDocs: DISCOVERY_DOCS,
-        scope: SCOPES
+        discoveryDocs: DISCOVERY_DOCS
     }).then(() => {
         console.log('Client initialized.');
-        gapi.auth2.init({client_id: CLIENT_ID});
-        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
-        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
-        authorizeButton.onclick = handleAuthClick;
-        signoutButton.onclick = handleSignoutClick;
+        document.getElementById("g_id_onload").dataset.callback = "handleCredentialResponse";
     }).catch((error) => {
         console.error('Error initializing client:', error);
     });
 }
 
-function updateSigninStatus(isSignedIn) {
-    console.log('Signin status changed:', isSignedIn);
-    if (isSignedIn) {
-        authorizeButton.style.display = 'none';
-        signoutButton.style.display = 'block';
-        content.style.display = 'block';
-        listProjects();
-    } else {
-        authorizeButton.style.display = 'block';
-        signoutButton.style.display = 'none';
-        content.style.display = 'none';
-    }
+function handleCredentialResponse(response) {
+    console.log('Credential Response:', response);
+    const responsePayload = parseJwt(response.credential);
+
+    console.log("ID: " + responsePayload.sub);
+    console.log('Full Name: ' + responsePayload.name);
+    console.log('Given Name: ' + responsePayload.given_name);
+    console.log('Family Name: ' + responsePayload.family_name);
+    console.log("Image URL: " + responsePayload.picture);
+    console.log("Email: " + responsePayload.email);
+
+    // Show the content and signout button
+    signoutButton.style.display = 'block';
+    content.style.display = 'block';
+
+    listProjects();
 }
 
-function handleAuthClick(event) {
-    console.log('Authorizing...');
-    gapi.auth2.getAuthInstance().signIn().catch((error) => {
-        console.error('Error during sign-in:', error);
-    });
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
 }
 
 function handleSignoutClick(event) {
     console.log('Signing out...');
-    gapi.auth2.getAuthInstance().signOut();
+    // Hide the content and signout button
+    signoutButton.style.display = 'none';
+    content.style.display = 'none';
+
+    // Clear the Google Identity Services data
+    google.accounts.id.disableAutoSelect();
 }
 
 function listProjects() {
