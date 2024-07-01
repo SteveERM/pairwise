@@ -3,6 +3,7 @@ let API_KEY = 'AIzaSyCTPWWPhH4ha-r4-F8XZ1QvXuGJVHy3g24'; // Replace with your ac
 let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 let SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
+let authorizeButton;
 let signoutButton;
 let content;
 let tokenClient;
@@ -47,11 +48,8 @@ function handleAuthClick() {
     };
 
     if (gapi.client.getToken() === null) {
-        // Prompt the user to select a Google Account and ask for consent to share their data
-        // when establishing a new session.
         tokenClient.requestAccessToken({prompt: 'consent'});
     } else {
-        // Skip display of account chooser and consent dialog for an existing session.
         tokenClient.requestAccessToken({prompt: ''});
     }
 }
@@ -95,7 +93,7 @@ async function listProjects() {
 }
 
 async function addProject() {
-    console.log('22Adding project...');
+    console.log('Adding project...');
     let project = document.getElementById('project_name').value;
     let priority = document.getElementById('project_priority').value;
 
@@ -116,11 +114,16 @@ async function addProject() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    authorizeButton = document.getElementById('authorize_button');
     signoutButton = document.getElementById('signout_button');
     content = document.getElementById('content');
     console.log('DOM fully loaded and parsed');
+    console.log('authorizeButton:', authorizeButton);
     console.log('signoutButton:', signoutButton);
     console.log('content:', content);
+
+    authorizeButton.onclick = handleAuthClick;
+    signoutButton.onclick = handleSignoutClick;
 
     gapiLoaded();
     gisLoaded();
