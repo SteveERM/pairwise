@@ -1,5 +1,5 @@
-let CLIENT_ID = 'YOUR_CLIENT_ID.apps.googleusercontent.com';
-let API_KEY = 'YOUR_API_KEY';
+let CLIENT_ID = '137672712461-j295hi3qjd3ujn9752u6muaa7c912fsk.apps.googleusercontent.com';
+let API_KEY = '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';
 let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 let SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
