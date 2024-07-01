@@ -1,5 +1,5 @@
-let CLIENT_ID = '137672712461-j295hi3qjd3ujn9752u6muaa7c912fsk';
-let API_KEY = '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';
+let CLIENT_ID = '137672712461-j295hi3qjd3ujn9752u6muaa7c912fsk.apps.googleusercontent.com';
+let API_KEY = 'AIzaSyCTPWWPhH4ha-r4-F8XZ1QvXuGJVHy3g24';
 let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 let SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
