@@ -8,19 +8,54 @@ let content;
 
 function handleClientLoad() {
     console.log('Loading Google API client...');
-    gapi.load('client', initClient);
+    gapi.load('client:auth2', initClient);
 }
 
 function initClient() {
     console.log('Initializing client...');
     gapi.client.init({
         apiKey: API_KEY,
-        discoveryDocs: DISCOVERY_DOCS
+        clientId: CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES
     }).then(() => {
         console.log('Client initialized.');
+        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
     }).catch((error) => {
         console.error('Error initializing client:', error);
     });
+}
+
+function updateSigninStatus(isSignedIn) {
+    if (isSignedIn) {
+        // Ensure elements are correctly referenced
+        signoutButton = document.getElementById('signout_button');
+        content = document.getElementById('content');
+
+        if (signoutButton && content) {
+            // Show the content and signout button
+            signoutButton.style.display = 'block';
+            content.style.display = 'block';
+            listProjects();
+        } else {
+            console.error('Error: signoutButton or content element not found');
+        }
+    } else {
+        // Hide the content and signout button
+        if (signoutButton && content) {
+            signoutButton.style.display = 'none';
+            content.style.display = 'none';
+        }
+    }
+}
+
+function handleAuthClick(event) {
+    gapi.auth2.getAuthInstance().signIn();
+}
+
+function handleSignoutClick(event) {
+    gapi.auth2.getAuthInstance().signOut();
 }
 
 function handleCredentialResponse(response) {
@@ -34,22 +69,7 @@ function handleCredentialResponse(response) {
     console.log("Image URL: " + responsePayload.picture);
     console.log("Email: " + responsePayload.email);
 
-    // Ensure elements are correctly referenced
-    signoutButton = document.getElementById('signout_button');
-    content = document.getElementById('content');
-
-    console.log('signoutButton:', signoutButton);
-    console.log('content:', content);
-
-    if (signoutButton && content) {
-        // Show the content and signout button
-        signoutButton.style.display = 'block';
-        content.style.display = 'block';
-
-        listProjects();
-    } else {
-        console.error('Error: signoutButton or content element not found');
-    }
+    updateSigninStatus(true);
 }
 
 function parseJwt(token) {
@@ -60,18 +80,6 @@ function parseJwt(token) {
     }).join(''));
 
     return JSON.parse(jsonPayload);
-}
-
-function handleSignoutClick() {
-    console.log('Signing out...');
-    // Hide the content and signout button
-    if (signoutButton && content) {
-        signoutButton.style.display = 'none';
-        content.style.display = 'none';
-    }
-
-    // Clear the Google Identity Services data
-    google.accounts.id.disableAutoSelect();
 }
 
 function listProjects() {
@@ -129,4 +137,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM fully loaded and parsed');
     console.log('signoutButton:', signoutButton);
     console.log('content:', content);
+
+    // Add event listeners for buttons
+    document.getElementById('authorize_button').onclick = handleAuthClick;
+    document.getElementById('signout_button').onclick = handleSignoutClick;
 });
