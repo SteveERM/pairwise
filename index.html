@@ -3,8 +3,8 @@
 <head>
     <title>Project Prioritization App</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script src="https://apis.google.com/js/api.js"></script>
-    <script src="app.js"></script>
+    <script src="https://apis.google.com/js/api.js" async defer></script>
+    <script src="app.js" async defer></script>
 </head>
 <body>
     <h1>Project Prioritization App</h1>
@@ -16,6 +16,7 @@
          data-auto_prompt="false">
     </div>
     <div class="g_id_signin" data-type="standard"></div>
+    <button id="authorize_button" style="display: none;">Authorize</button>
     <button id="signout_button" style="display: none;" onclick="handleSignoutClick()">Sign Out</button>
     <div id="content" style="display: none;">
         <h2>Projects</h2>
@@ -25,7 +26,7 @@
                 <th>Priority</th>
             </tr>
         </table>
-        <h2>Add Project</h2>
+        <h2>Add Project you Bastard</h2>
         <input type="text" id="project_name" placeholder="Project Name">
         <input type="text" id="project_priority" placeholder="Priority">
         <button onclick="addProject()">Add Project</button>
