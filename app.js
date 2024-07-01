@@ -11,6 +11,7 @@ let gapiInited = false;
 let gisInited = false;
 
 function gapiLoaded() {
+    console.log('Start')
     gapi.load('client', initializeGapiClient);
 }
 
@@ -57,16 +58,17 @@ function handleAuthClick() {
 function handleSignoutClick() {
     const token = gapi.client.getToken();
     if (token !== null) {
-        google.accounts.oauth2.revoke(token.access_token);
-        gapi.client.setToken('');
-        document.getElementById('content').style.display = 'none';
-        document.getElementById('signout_button').style.display = 'none';
-        document.getElementById('authorize_button').style.display = 'block';
+        google.accounts.oauth2.revoke(token.access_token, () => {
+            gapi.client.setToken('');
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('signout_button').style.display = 'none';
+            document.getElementById('authorize_button').style.display = 'block';
+        });
     }
 }
 
 async function listProjects() {
-    console.log('BL Bla BLA Listing projects...');
+    console.log('Listing projects...');
     try {
         const response = await gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: '1qICVu7Gxs9FnRPIRnlNct3sty9cCstVyu3lU3jy0SFM',
@@ -128,3 +130,31 @@ document.addEventListener('DOMContentLoaded', () => {
     gapiLoaded();
     gisLoaded();
 });
+
+function handleCredentialResponse(response) {
+    console.log('Credential Response:', response);
+    const responsePayload = parseJwt(response.credential);
+
+    console.log("ID: " + responsePayload.sub);
+    console.log('Full Name: ' + responsePayload.name);
+    console.log('Given Name: ' + responsePayload.given_name);
+    console.log('Family Name: ' + responsePayload.family_name);
+    console.log("Image URL: " + responsePayload.picture);
+    console.log("Email: " + responsePayload.email);
+
+    document.getElementById('content').style.display = 'block';
+    document.getElementById('signout_button').style.display = 'block';
+    document.getElementById('authorize_button').style.display = 'none';
+
+    listProjects();
+}
+
+function parseJwt(token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
