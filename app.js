@@ -3,8 +3,8 @@ let API_KEY = 'AIzaSyCTPWWPhH4ha-r4-F8XZ1QvXuGJVHy3g24'; // Replace with your ac
 let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 let SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
-let signoutButton = document.getElementById('signout_button');
-let content = document.getElementById('content');
+let signoutButton;
+let content;
 
 function handleClientLoad() {
     console.log('Loading Google API client...');
@@ -34,11 +34,19 @@ function handleCredentialResponse(response) {
     console.log("Image URL: " + responsePayload.picture);
     console.log("Email: " + responsePayload.email);
 
-    // Show the content and signout button
-    signoutButton.style.display = 'block';
-    content.style.display = 'block';
+    // Ensure elements are correctly referenced
+    signoutButton = document.getElementById('signout_button');
+    content = document.getElementById('content');
 
-    listProjects();
+    if (signoutButton && content) {
+        // Show the content and signout button
+        signoutButton.style.display = 'block';
+        content.style.display = 'block';
+
+        listProjects();
+    } else {
+        console.error('Error: signoutButton or content element not found');
+    }
 }
 
 function parseJwt(token) {
@@ -54,8 +62,10 @@ function parseJwt(token) {
 function handleSignoutClick() {
     console.log('Signing out...');
     // Hide the content and signout button
-    signoutButton.style.display = 'none';
-    content.style.display = 'none';
+    if (signoutButton && content) {
+        signoutButton.style.display = 'none';
+        content.style.display = 'none';
+    }
 
     // Clear the Google Identity Services data
     google.accounts.id.disableAutoSelect();
@@ -105,4 +115,10 @@ function addProject() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', handleClientLoad);
+document.addEventListener('DOMContentLoaded', () => {
+    handleClientLoad();
+
+    // Ensure elements are loaded
+    signoutButton = document.getElementById('signout_button');
+    content = document.getElementById('content');
+});
