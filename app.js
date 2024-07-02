@@ -1,5 +1,5 @@
 let CLIENT_ID = '137672712461-j295hi3qjd3ujn9752u6muaa7c912fsk.apps.googleusercontent.com';
-let API_KEY = 'AIzaSyCTPWWPhH4ha-r4-F8XZ1QvXuGJVHy3g24'; // Replace with your actual API key
+let API_KEY = 'YOUR_NEW_API_KEY'; // Replace with your actual API key
 let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 let SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
@@ -113,12 +113,19 @@ async function addProject() {
     }
 }
 
+function setBuildDate() {
+    const buildDate = new Date().toISOString();
+    document.getElementById('build_date').innerText = `Build Date: ${buildDate}`;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     signoutButton = document.getElementById('signout_button');
     content = document.getElementById('content');
     console.log('DOM fully loaded and parsed');
     console.log('signoutButton:', signoutButton);
     console.log('content:', content);
+
+    setBuildDate(); // Set the build date on the screen
 
     gapiLoaded();
     gisLoaded();
