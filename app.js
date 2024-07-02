@@ -3,7 +3,6 @@ let API_KEY = 'AIzaSyCTPWWPhH4ha-r4-F8XZ1QvXuGJVHy3g24'; // Replace with your ac
 let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
 let SCOPES = "https://www.googleapis.com/auth/spreadsheets";
 
-let authorizeButton;
 let signoutButton;
 let content;
 let tokenClient;
@@ -35,7 +34,7 @@ function gisLoaded() {
 
 function maybeEnableButtons() {
     if (gapiInited && gisInited) {
-        document.getElementById('authorize_button').style.display = 'block';
+        document.querySelector('.g_id_signin').style.display = 'block';
     }
 }
 
@@ -61,7 +60,7 @@ function handleSignoutClick() {
             gapi.client.setToken('');
             document.getElementById('content').style.display = 'none';
             document.getElementById('signout_button').style.display = 'none';
-            document.getElementById('authorize_button').style.display = 'block';
+            document.querySelector('.g_id_signin').style.display = 'block';
         });
     }
 }
@@ -115,16 +114,11 @@ async function addProject() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    authorizeButton = document.getElementById('authorize_button');
     signoutButton = document.getElementById('signout_button');
     content = document.getElementById('content');
     console.log('DOM fully loaded and parsed');
-    console.log('authorizeButton:', authorizeButton);
     console.log('signoutButton:', signoutButton);
     console.log('content:', content);
-
-    authorizeButton.onclick = handleAuthClick;
-    signoutButton.onclick = handleSignoutClick;
 
     gapiLoaded();
     gisLoaded();
@@ -143,7 +137,7 @@ function handleCredentialResponse(response) {
 
     document.getElementById('content').style.display = 'block';
     document.getElementById('signout_button').style.display = 'block';
-    document.getElementById('authorize_button').style.display = 'none';
+    document.querySelector('.g_id_signin').style.display = 'none';
 
     listProjects();
 }
