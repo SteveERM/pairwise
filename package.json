@@ -1,0 +1,7 @@
+/my-project
+  |-- package.json
+  |-- app.js
+  |-- index.html
+  |-- public/
+      |-- scripts/
+          |-- app.js
